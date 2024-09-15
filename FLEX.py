@@ -335,45 +335,32 @@ class GalaxyDataExtractor:
         return full_image
 
     def process_galaxies(self):
-         """
-        Process a list of galaxy IDs to extract relevant data from FITS files and the CANDELS catalogue, 
-        and save the processed data into HDF5 files, organized by different filters. 
-        
-        This method handles the entire galaxy data processing pipeline, including:
-        1. Retrieving Right Ascension (RA) and Declination (Dec) coordinates from the CANDELS catalogue.
-        2. Identifying the corresponding FITS file for each galaxy, based on its RA and Dec coordinates.
-        3. Converting RA and Dec to pixel coordinates within the identified FITS file and checking if the 
-        galaxy falls within the image bounds.
-        4. Using the F444W filter data to determine the radius of the galaxy in the FITS images.
-        5. Extracting the galaxy image data and uncertainty arrays from multiple filters, centered on the 
-        galaxy and limited to the determined radius.
-        6. Organizing the extracted data into a structured HDF5 file, where the data is categorized by filter.
-        7. Logging any galaxies where the image data contains zero values or falls at the edge of the detector.
+        """
+        Process each galaxy in the list of galaxy IDs, extract relevant data from FITS files and CANDELS catalogue,
+        and save the processed data into HDF5 files organized by different filters.
 
-        Key Details:
-        - The method iterates through each galaxy ID provided during initialization.
-        - If no RA and Dec are found for a galaxy in the CANDELS catalogue, the galaxy is skipped.
-        - Errors during the data extraction process or file handling are captured and logged appropriately.
-        - The processed data is saved in HDF5 files with names formatted as 'EGS_{galaxy_id:05d}.hdf5'. 
-        Each filter used is stored as a separate group in the file.
-        
-        Log File:
-        - A log file (`Expansion_LogFile.csv`) is maintained to document galaxies that have zero data or 
-        lie at the edge of the detector in any filter.
+        This method iterates over each galaxy ID provided during initialization. For each galaxy ID:
+        - It retrieves the RA and Dec coordinates from the CANDELS catalogue.
+        - Finds the corresponding FITS file where the galaxy is located based on its RA and Dec values.
+        - Determines the rounded pixel coordinates within the FITS image.
+        - Calculates the galaxy radius using the F444W filter data.
+        - Extracts image data and uncertainty arrays from multiple filters centered on the galaxy,
+          masking out background galaxies beyond the determined radius.
+        - Creates full image arrays including pixel coordinates, image data, and uncertainty.
+        - Saves each image array into an HDF5 file named 'testing_{galaxy_id:05d}.hdf5', organized into groups
+          corresponding to each filter.
 
-        Notes:
-        - RA and Dec coordinates are converted to pixel coordinates using the WCS header from the FITS files.
-        - The galaxy radius is determined using the F444W filter data, but this can be adjusted if needed.
-        - Background galaxies outside the galaxy radius are masked out.
-        - Only galaxies with non-zero data are saved in the HDF5 file.
+        The HDF5 files contain structured data suitable for further analysis and visualization of galaxy images.
+
+        Note:
+        - If the galaxy ID is not found in the CANDELS catalogue or its coordinates do not correspond to any FITS file,
+          a message is printed and the process moves to the next galaxy ID.
+        - Errors encountered during data extraction or file handling are caught and logged.
 
         Raises:
         ------
-        OSError:
-            If there is an issue creating or writing to the HDF5 files, an error is logged.
-        Exception:
-            If any errors occur during the extraction of image data or uncertainty, they are handled and logged.
-
+        OSError
+            If there is an issue creating or writing to the HDF5 files.
         """
         # For loop to go through each galaxy in user created list
         for galaxy_id in self.galaxy_ids:
