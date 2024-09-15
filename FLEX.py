@@ -22,7 +22,7 @@ from scipy import stats
 
 class GalaxyDataExtractor:
     """
-    A class to extract and process galaxy data from FITS files and a CANDELS catalogue.
+    A class to extract and process galaxy data from FITS files and EGS CANDELS catalogue.
 
     Parameters:
     ----------
@@ -38,18 +38,18 @@ class GalaxyDataExtractor:
     fits_files : list of str
         List of paths to FITS files containing galaxy data.
     filename : str
-        Path to the CANDELS catalogue.
+        Path to the EGS CANDELS catalogue.
     galaxy_ids : list of int
-        List of galaxy IDs to process.
+        List of user inputted galaxy IDs to process.
     wcs_objects : dict
         Dictionary mapping each FITS file to its WCS object.
     """
 
     def __init__(self, fits_files, filename, galaxy_ids):
         """
-        Initialize GalaxyDataExtractor with FITS files, CANDELS catalogue, and galaxy IDs.
+        Initialize GalaxyDataExtractor class with FITS files, CANDELS catalogue, and galaxy IDs.
 
-        Suppress specific warnings related to FITS files and runtime warnings.
+        Here, specific warnings related to FITS files and runtime warnings are supressed.
 
         Parameters:
         ----------
@@ -132,7 +132,7 @@ class GalaxyDataExtractor:
                 for line in file:
                     data = line.strip().split()
                     
-                    # If loop to skip beginning header lines and move to actual data
+                    # If loop to skip beginning header lines and move on to actual data
                     if len(data) < 3:
                         print(f"Skipping malformed line: {line.strip()}")
                         continue
@@ -206,7 +206,7 @@ class GalaxyDataExtractor:
         intensity_values = image_data.flatten()
         radial_distances_flat = radial_distances.flatten()
         
-        # Remove NaN values as they can cause an error
+        # Remove NaN values as they can giv rise to an error
         mask = ~np.isnan(intensity_values)
         intensity_values = intensity_values[mask]
         radial_distances_flat = radial_distances_flat[mask]
@@ -216,7 +216,7 @@ class GalaxyDataExtractor:
         sorted_distances = radial_distances_flat[sorted_indices]
         sorted_intensities = intensity_values[sorted_indices]
         
-        # If loop to deal with cases where there aren't enough points for scipy method to work on
+        # If loop to deal with cases where there aren't enough points for scipy.optimize curvefit method to work on
         if len(sorted_distances) < 10:
             print("Not enough data points for fitting.")
             return np.nan
@@ -283,20 +283,20 @@ class GalaxyDataExtractor:
             if galaxy_radius is None:
                 galaxy_radius = self.determine_galaxy_radius(cropped_data)
             
-            # Calculate radial distance from galactic center (rounded_x, rounded_y)
+            # Calculate radial distance from galactic center (rounded_x, rounded_y) which is RA and Dec value from CANDELS
             x_indices, y_indices = np.indices(cropped_data.shape)
             distance_from_center = np.sqrt((x_indices - (rounded_x - xmin))**2 + (y_indices - (rounded_y - ymin))**2)
             
             # Mask high pixel intensity spots only outside a certain radius
             mask_galaxy = distance_from_center <= galaxy_radius
             
-            # Define a mask for background galaxy based on mean value of cropped data determined above
-            metric_threshold = np.median(cropped_data[mask_galaxy]) + stats.median_abs_deviation(cropped_data[mask_galaxy])
+            # Define a threshold for background galaxy masking using sigma clipping
+            metric_threshold = np.median(cropped_data[mask_galaxy]) + 3 * stats.median_abs_deviation(cropped_data[mask_galaxy])
             
             # Define threshold where if the pixel value (outside the galaxy radius) exceeds metric_threshold it is blanked
             mask_background = cropped_data > metric_threshold
             
-            # Combine galaxy and background masks to blank out regions. '~' essentially reverses the conditions of mask_galaxy
+            # Combine galaxy and background masks to blank out regions. '~' reverses the conditions of mask_galaxy
             mask_to_blank = mask_background & ~mask_galaxy
             
             # Apply NaNs to blank out regions in cropped_data and cropped_uncertainty
@@ -462,10 +462,10 @@ class GalaxyDataExtractor:
                                 # Read and process FITS data. Supplying rounded_x and rounded_y here
                                 cropped_data, cropped_uncertainty = self.get_fits_data(filename, rounded_x, rounded_y, galaxy_radius)
 
-
+                                # If loop to check for empty image arrays
                                 if np.all(cropped_data == 0):
                                     
-                                    # Log even if cropped_data is zero
+                                    # Log onto external file if cropped_data is zero
                                     output_filename = 'Expansion_LogFile.csv'
                                     file_exists = os.path.isfile(output_filename)
                                     
@@ -486,7 +486,7 @@ class GalaxyDataExtractor:
                                             'Data Status': status
                                         })
                                     
-                                    print(f"Zero data for galaxy ID {galaxy_id} in filter {filename}. Logged and continuing.")
+                                    print(f"Zero data for galaxy ID {galaxy_id} in file {filename}. Logged and continuing.")
                                     
                                     continue
                                     
@@ -513,7 +513,7 @@ class GalaxyDataExtractor:
                                             'Data Status': status
                                         })
                                     
-                                    print(f"Galaxy ID {galaxy_id} in filter {filename} is at the edge. Logged and continuing.")
+                                    print(f"Galaxy ID {galaxy_id} in file {filename} is at the edge. Logged and continuing.")
                                     
                                     continue
                                     
@@ -577,7 +577,7 @@ class LaguerreAmplitudes:
 
     def readsnapshot(self, datafile, groupname):
         """
-        Read and preprocess image data from an HDF5 snapshot file.
+        Read and preprocess image data from an HDF5 file.
 
         Parameters:
         -----------
@@ -612,7 +612,7 @@ class LaguerreAmplitudes:
             # Assuming the initial FITS data is saved as 'image'
             image_data = f[groupname]['image'][:]
             
-            # Extract image_array from image_data. This excludes the uncertainty, xarr and yarr
+            # Extract image_array from image_data. This excludes the uncertainty, xarr and yarr arrays
             image_array = image_data[2]
 
             # Get the shape of image_array (2D shape)
