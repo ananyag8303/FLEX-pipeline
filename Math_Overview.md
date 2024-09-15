@@ -2,13 +2,13 @@
     <strong style="font-size: 2em;">Math Overview</strong>
 </div>
 
-Disc galaxies have a negative exponential surface brightness profile as described by Equation 1, where '$`a`$' is the scale length of the disc. These galaxies are often reasonably smooth in the azimuthal coordinate '$\phi$', with low-order multiplicity '$m$' and can be described by Fourier Series. 
+Disc galaxies have a negative exponential surface brightness profile as described by Equation 1, where '$`a`$' is the scale length of the disc. These galaxies are often reasonably smooth in the azimuthal coordinate '$`\phi`$', with low-order multiplicity '$`m`$' and can be described by Fourier Series. 
 
 $$
 \Sigma(R) \propto \exp\left(-\frac{R}{a}\right)
 $$ 
 
-In the radial '$R$' coordinate, Laguerre basis functions, as shown in Equation 2, are utilised as the exponential term closely approximates to the exponential profile of a typical disc galaxy (Equation 1). Here, in Equation 2, '$L_n^1$' is the associated Laguerre polynomial of order '$\alpha=1$' and degree '$n$', and '$a$' is the expansion scale length.
+In the radial '$`R`$' coordinate, Laguerre basis functions, as shown in Equation 2, are utilised as the exponential term closely approximates to the exponential profile of a typical disc galaxy (Equation 1). Here, in Equation 2, '$`L_n^1`$' is the associated Laguerre polynomial of order '$`\alpha=1`$' and degree '$`n`$', and '$`a`$' is the expansion scale length.
 
 $$
 G_n(R)=\frac{1}{a\sqrt{n+1}}~\exp\left(-\frac{R}{a}\right)~L_n^1\left(\frac{2R}{a}\right) 
