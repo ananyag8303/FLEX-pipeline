@@ -6,7 +6,7 @@ Disc galaxies have a negative exponential surface brightness profile as describe
 
 **(1)**
 
-$$ \Sigma(R) \propto \exp\left(-\frac{R}{a}\right)$$
+$$ \Sigma(R) \propto \exp\left(-\frac{R}{a}\right)$$  **(1)**
 
 In the radial '$R$' coordinate, Laguerre basis functions, as shown in Equation 2, are utilised as the exponential term closely approximates to the exponential profile of a typical disc galaxy (Equation 1). Here, in Equation 2, '$L_n^1$' is the associated Laguerre polynomial of order '$\alpha=1$' and degree '$n$', and '$a$' is the expansion scale length.
 
