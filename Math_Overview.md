@@ -2,7 +2,7 @@
     <strong style="font-size: 2em;">Math Overview</strong>
 </div>
 
-Disc galaxies have a negative exponential surface brightness profile as described by Equation 1, where '$a$' is the scale length of the disc. These galaxies are often reasonably smooth in the azimuthal coordinate '$\phi$', with low-order multiplicity '$m$' and can be described by Fourier Series. 
+Disc galaxies have a negative exponential surface brightness profile as described by Equation 1, where '$`a`$' is the scale length of the disc. These galaxies are often reasonably smooth in the azimuthal coordinate '$\phi$', with low-order multiplicity '$m$' and can be described by Fourier Series. 
 
 $$
 \Sigma(R) \propto \exp\left(-\frac{R}{a}\right)
