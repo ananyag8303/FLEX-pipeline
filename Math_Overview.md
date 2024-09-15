@@ -4,7 +4,7 @@
 
 Disc galaxies have a negative exponential surface brightness profile as described by Equation 1, where '$a$' is the scale length of the disc. These galaxies are often reasonably smooth in the azimuthal coordinate '$\phi$', with low-order multiplicity '$m$' and can be described by Fourier Series. 
 
-$$ \Sigma(R) \propto \exp\left(-\frac{R}{a}\right)\tag{1}$$
+$$ \Sigma(R) \propto \exp\left(-\frac{R}{a}\right)$$
 
 $$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)$$
 
