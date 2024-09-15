@@ -19,6 +19,7 @@ Hence, Fourier-Laguerre basis functions can accurately model the surface brightn
 $$
 \hat{c}_{mn} = \frac{1}{2\pi}\sum_x \sum_y \Sigma(R_{xy}, \phi_{xy})\cos\left(m\phi_{xy}\right) G_n(R_i) 
 $$
+
 $$
 \hat{s}_{mn} = \frac{1}{2\pi}\sum_x \sum_y \Sigma(R_{xy}, \phi_{xy})\sin\left(m\phi_{xy}\right) G_n(R_i) 
 $$
