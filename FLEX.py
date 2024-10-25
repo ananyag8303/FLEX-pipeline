@@ -22,7 +22,7 @@ from scipy import stats
 
 class GalaxyDataExtractor:
     """
-    A class to extract and process galaxy data from FITS files and EGS CANDELS catalogue.
+    A class to extract and process galaxy data from FITS files and CANDELS catalogue.
 
     Parameters:
     ----------
@@ -120,7 +120,7 @@ class GalaxyDataExtractor:
         tuple of float or None
             RA and Dec values of the galaxy if found, otherwise (None, None).
         """
-        # Use above function to determine encoding of catalogue
+        # Use above method to determine encoding of catalogue
         encoding = self.detect_encoding(filename)
         
         # Try and except block to handle possible encoding errors
@@ -130,6 +130,7 @@ class GalaxyDataExtractor:
                 
                 # For loop to go through each line in file
                 for line in file:
+                    
                     data = line.strip().split()
                     
                     # If loop to skip beginning header lines and move on to actual data
@@ -142,6 +143,7 @@ class GalaxyDataExtractor:
                         
                         # Try and except block to handle cases when wrong ID could have been entered by user
                         try:
+                            
                             # Extract RA and Dec stored in 2nd and 3rd column of txt file respectively
                             ra = float(data[1])
                             dec = float(data[2])
@@ -206,7 +208,7 @@ class GalaxyDataExtractor:
         intensity_values = image_data.flatten()
         radial_distances_flat = radial_distances.flatten()
         
-        # Remove NaN values as they can giv rise to an error
+        # Remove NaN values as they can cause an error
         mask = ~np.isnan(intensity_values)
         intensity_values = intensity_values[mask]
         radial_distances_flat = radial_distances_flat[mask]
@@ -223,7 +225,8 @@ class GalaxyDataExtractor:
         
         # Try and except block to handle possible errors in Sersic Profile fitting
         try:
-            # Perform scipy curve fitting using scipy.optimize. Disk galaxies here have exponential profile ie n ~ 1
+            
+            # Perform scipy curve fitting using scipy.optimize. Disc galaxies here have exponential profile ie n ~ 1
             popt, _ = curve_fit(self.sersic_profile, sorted_distances, sorted_intensities, p0=(1.0, sorted_distances[-1], n_guess), maxfev=10000)
             
             # Assign values to the result got above
@@ -260,6 +263,7 @@ class GalaxyDataExtractor:
         ndarray
             Cropped uncertainty data of the galaxy.
         """
+        
         # Open FITS file
         with fits.open(filename) as hdu:
             
@@ -267,7 +271,7 @@ class GalaxyDataExtractor:
             image_data = hdu[1].data
             image_uncertainty = hdu[3].data
             
-            # Define pixel cutout bounds
+            # Define pixel cutout bounds (110 by 110 pixels)
             xmin, xmax = rounded_x - 55, rounded_x + 55
             ymin, ymax = rounded_y - 55, rounded_y + 55
             
@@ -279,7 +283,7 @@ class GalaxyDataExtractor:
             cropped_data = cropped_data.T
             cropped_uncertainty = cropped_uncertainty.T
             
-            # If galaxy radius isn't fixed find it. This will be done for F444W and kept fixed for all other filters
+            # If galaxy radius isn't fixed find it. This will be done in F444W and fixed for all further filters
             if galaxy_radius is None:
                 galaxy_radius = self.determine_galaxy_radius(cropped_data)
             
@@ -321,6 +325,7 @@ class GalaxyDataExtractor:
         ndarray
             Full image array with pixel coordinates, image data, and uncertainty.
         """
+        
         # Find x and y dimension of cropped image
         xdim, ydim = cropped_data.shape
         
@@ -362,13 +367,14 @@ class GalaxyDataExtractor:
         OSError
             If there is an issue creating or writing to the HDF5 files.
         """
+        
         # For loop to go through each galaxy in user created list
         for galaxy_id in self.galaxy_ids:
 
             # Print Galaxy ID currently being analysed
             print(f"Processing galaxy ID: {galaxy_id}")
 
-            # Get RA and Dec values using above defined function
+            # Get RA and Dec values using above defined method
             RA, Dec = self.get_ra_dec(self.filename, galaxy_id)
 
             # If no RA and Dec is found report that it doesn't exist in given FITS fields. Move onto next galaxy
@@ -377,6 +383,7 @@ class GalaxyDataExtractor:
                 continue
 
             valid_x, valid_y, valid_file = None, None, None
+            
             # For loop to go through each FITS file 
             for file in self.fits_files:
 
@@ -392,6 +399,7 @@ class GalaxyDataExtractor:
                     # Check if pixel coordinates are within bounds of the image
                     if 0 <= x < data[1].data.shape[1] and 0 <= y < data[1].data.shape[0]:
                         valid_x, valid_y, valid_file = x, y, file
+                        
                         # Break loop when valid file and pixel values are found 
                         break
 
@@ -453,7 +461,7 @@ class GalaxyDataExtractor:
                         for group_name in filter_groups:
                             f.create_group(group_name)
 
-                        # Initialize a flag to check if all cropped_data arrays are zero   
+                        # Initialize a flag to check if all cropped_data arrays are zero /edge of image  
                         all_zero = True  
 
                         # Loop over each FITS file 
@@ -535,6 +543,7 @@ class GalaxyDataExtractor:
 
                         else:
                             print(f"Data for Galaxy ID {galaxy_id} saved successfully.")
+                            print('')
 
                 except Exception as e:
                     print(f"Error creating HDF5 file for galaxy ID {galaxy_id}: {e}")
@@ -1029,6 +1038,7 @@ def process_galaxy(galaxy_id, fits_files, filename):
         
         except KeyError as e:
             print(f"Error processing galaxy ID {galaxy_id}: {e}")
+            
             # Skip to the next galaxy ID
             return  
 
@@ -1147,7 +1157,9 @@ def analyze_filter(galaxyid, filter_name, mmax_initial, nmax_initial, rscl_initi
             
             except KeyError as e:
                 print(f"Error processing filter {filter_name} for galaxy ID {galaxyid}: {e}")
-                return  # Skip to the next filter
+                
+                # Skip to the next filter
+                return  
 
             # Calculate the Laguerre amplitudes
             L.laguerre_amplitudes()
@@ -1226,7 +1238,9 @@ def analyze_filter(galaxyid, filter_name, mmax_initial, nmax_initial, rscl_initi
       
     except Exception as e:
         print(f"Error processing galaxy ID {galaxyid} in filter {filter_name}: {e}")
-        return  # Skip to the next galaxy or filter
+        
+        # Skip to the next galaxy or filter
+        return  
     
 # Constants to use for the function
 filters = ['f356w', 'f277w', 'f200w', 'f115w', 'f410m', 'f125w', 'f160w', 'f606w', 'f814w']  
