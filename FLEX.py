@@ -597,9 +597,9 @@ class LaguerreAmplitudes:
 
         Returns:
         --------
-        rr : ndarray, shape [x, y]
+        rr : ndarray
             Radial coordinates of pixels. 
-        pp : ndarray, shape [x, y]
+        pp : ndarray
             Angular coordinates of pixels.
         xpix : ndarray
             Meshgrid of x-pixel coordinates.
@@ -871,8 +871,7 @@ class LaguerreAmplitudes:
         self.laguerre_amplitudes()
 
         # Perform the updated reconstruction
-        reconstruction = self.laguerre_reconstruction(np.sqrt((self.xpix - x)**2 + (self.ypix - y)**2), \
-                                                      np.arctan2(self.ypix - y, self.xpix - x))
+        reconstruction = self.laguerre_reconstruction(self.R, self.phi)
 
         return x, y, reconstruction
 
@@ -938,9 +937,9 @@ class LaguerreAmplitudes:
 
         Parameters:
         -----------
-        rr : array-like, shape [x, y]
+        rr : array-like
             Radial coordinates for reconstruction.
-        pp : array-like, shape [x, y]
+        pp : array-like
             Angular coordinates for reconstruction.
 
         Returns:
@@ -954,8 +953,8 @@ class LaguerreAmplitudes:
         calculated from the Laguerre expansion.
         """
         nmvals = self._n_m()
-        G_j = self._G_n(rr.flatten(), np.arange(0, self.nmax), self.rscl)
-        G_j = G_j.reshape(G_j.shape[0], rr.shape[0], rr.shape[1]) #check this?
+        G_j = self._G_n(rr, np.arange(0, self.nmax), self.rscl)
+
         fftotal = sum(
             self.coscoefs[m, n] * nmvals[m] * np.cos(m * pp) * G_j[n]
             + self.sincoefs[m, n] * nmvals[m] * np.sin(m * pp) * G_j[n]
@@ -993,7 +992,14 @@ class LaguerreAmplitudes:
         norm_coscoefs_1 = np.linalg.norm(laguerre.coscoefs[0, 1:])
         return norm_coscoefs_1 / abs_coscoefs_0
     
-
+# Constants
+f444w_group = 'f444w'
+rscl_initial = 10
+mmax_initial = 2
+nmax_initial = 10
+rscl_values = np.linspace(1, 20, 100)
+new_mmax = 8
+new_nmax = 24
 
 def process_galaxy(galaxy_id, fits_files, filename):
     """
@@ -1065,7 +1071,7 @@ def process_galaxy(galaxy_id, fits_files, filename):
         L.laguerre_amplitudes()
 
         # Perform the reconstruction
-        reconstruction = L.laguerre_reconstruction(rr, pp)
+        reconstruction = L.laguerre_reconstruction(rr.flatten(), pp.flatten())
 
         # Save the expansion coefficients to the HDF5 file
         dset = f444w.create_dataset(f"{galaxy_id}/expansion", data=np.stack([L.coscoefs, L.sincoefs]))
@@ -1094,9 +1100,9 @@ def process_galaxy(galaxy_id, fits_files, filename):
 
         # Plot in the following order: Original Image, Expanded Image, Relative Uncertainty and Absolute Uncertainty
         ax1.contourf(xpix, ypix, np.log10(fixed_image), cval, cmap=plt.cm.Greys)
-        ax2.contourf(xpix - center_x, ypix - center_y, np.log10(reconstruction), cval, cmap=plt.cm.Greys)
-        ax3.contourf(xpix - center_x, ypix - center_y, (reconstruction - fixed_image) / fixed_image, np.linspace(-.25, .25, 100), cmap=plt.cm.Greys)
-        ax4.contourf(xpix - center_x, ypix - center_y, abs(reconstruction - fixed_image), np.linspace(-.25, .25, 100), cmap=plt.cm.Greys)
+        ax2.contourf(xpix - center_x, ypix - center_y, np.log10(reconstruction.reshape(xdim, ydim)), cval, cmap=plt.cm.Greys)
+        ax3.contourf(xpix - center_x, ypix - center_y, (reconstruction.reshape(xdim, ydim) - fixed_image) / fixed_image, np.linspace(-.25, .25, 100), cmap=plt.cm.Greys)
+        ax4.contourf(xpix - center_x, ypix - center_y, abs(reconstruction.reshape(xdim, ydim) - fixed_image), np.linspace(-.25, .25, 100), cmap=plt.cm.Greys)
 
         for ax, title in zip([ax1, ax2, ax3, ax4], ['log surface density', 'expanded surface density', 'relative uncertainty', 'absolute uncertainty']):
             ax.set_title(title)
@@ -1177,7 +1183,7 @@ def analyze_filter(galaxyid, filter_name, mmax_initial, nmax_initial, rscl_initi
             L.laguerre_amplitudes()
 
             # Perform the reconstruction
-            reconstruction = L.laguerre_reconstruction(rr, pp)
+            reconstruction = L.laguerre_reconstruction(rr.flatten(), pp.flatten())
 
             # Save the expansion coefficients to the HDF5 file 
             dset = filter_group.create_dataset(f"{galaxyid}/expansion", data=np.stack([L.coscoefs, L.sincoefs]))
@@ -1208,9 +1214,9 @@ def analyze_filter(galaxyid, filter_name, mmax_initial, nmax_initial, rscl_initi
 
             # Plot in the following order: Original Image, Expanded Image, Relative Uncertainty and Absolute Uncertainty
             ax1.contourf(xpix, ypix, np.log10(fixed_image), cval, cmap=plt.cm.Greys)
-            ax2.contourf(xpix - center_x, ypix - center_y, np.log10(reconstruction), cval, cmap=plt.cm.Greys)
-            ax3.contourf(xpix - center_x, ypix - center_y, (reconstruction - fixed_image) / fixed_image, np.linspace(-.25, .25, 100), cmap=plt.cm.Greys)
-            ax4.contourf(xpix - center_x, ypix - center_y, abs(reconstruction - fixed_image), np.linspace(-.25, .25, 100), cmap=plt.cm.Greys)
+            ax2.contourf(xpix - center_x, ypix - center_y, np.log10(reconstruction.reshape(xdim, ydim)), cval, cmap=plt.cm.Greys)
+            ax3.contourf(xpix - center_x, ypix - center_y, (reconstruction.reshape(xdim, ydim) - fixed_image) / fixed_image, np.linspace(-.25, .25, 100), cmap=plt.cm.Greys)
+            ax4.contourf(xpix - center_x, ypix - center_y, abs(reconstruction.reshape(xdim, ydim) - fixed_image), np.linspace(-.25, .25, 100), cmap=plt.cm.Greys)
 
             for ax, title in zip([ax1, ax2, ax3, ax4], ['log surface density', 'expanded surface density', 'relative uncertainty', 'absolute uncertainty']):
                 ax.set_title(title)
@@ -1241,14 +1247,5 @@ filters = ['f356w', 'f277w', 'f200w', 'f115w', 'f410m', 'f125w', 'f160w', 'f606w
 mmax_initial = 2
 nmax_initial = 10
 rscl_initial = 10
-new_mmax = 8
-new_nmax = 24
-
-# Constants
-f444w_group = 'f444w'
-rscl_initial = 10
-mmax_initial = 2
-nmax_initial = 10
-rscl_values = np.linspace(1, 20, 100)
 new_mmax = 8
 new_nmax = 24
