@@ -1236,7 +1236,7 @@ def analyze_filter(galaxyid, filter_name, mmax_initial, nmax_initial, rscl_initi
         # Skip to the next galaxy or filter
         return  
     
-# Constants to use for the function
+# Constants to use for analyze_filter function
 filters = ['f356w', 'f277w', 'f200w', 'f115w', 'f410m', 'f125w', 'f160w', 'f606w', 'f814w']  
 mmax_initial = 2
 nmax_initial = 10
@@ -1244,7 +1244,7 @@ rscl_initial = 10
 new_mmax = 8
 new_nmax = 24
 
-# Constants
+# Constants to use for process_galaxy function 
 f444w_group = 'f444w'
 rscl_initial = 10
 mmax_initial = 2
