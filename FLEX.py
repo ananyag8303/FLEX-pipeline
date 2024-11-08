@@ -155,6 +155,7 @@ class GalaxyDataExtractor:
         
         except UnicodeDecodeError as e:
             print(f"Error decoding file with encoding {encoding}: {str(e)}")
+            
         return None, None
 
     def sersic_profile(self, r, I0, Reff, n):

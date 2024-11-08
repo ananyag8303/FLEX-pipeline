@@ -21,7 +21,6 @@ from scipy.optimize import curve_fit
 from scipy import stats
 from scipy.optimize import OptimizeWarning
 
-
 class GalaxyDataExtractor:
     """
     A class to extract and process galaxy data from FITS files and a CANDELS catalogue.
@@ -564,9 +563,9 @@ class LaguerreAmplitudes:
 
         Returns:
         --------
-        rr : ndarray
+        rr : ndarray, shape [x,y]
             Radial coordinates of pixels. 
-        pp : ndarray
+        pp : ndarray, shape [x,y]
             Angular coordinates of pixels.
         xpix : ndarray
             Meshgrid of x-pixel coordinates.
@@ -688,7 +687,10 @@ class LaguerreAmplitudes:
         This method calculates the coefficients using the current values of R, phi, mass,
         and velocity attributes of the object.
         """
-        G_j = self._G_n(self.R, np.arange(0, self.nmax), self.rscl)
+        
+        G_j = self._G_n(rr.flatten(), np.arange(0, self.nmax), self.rscl)
+        G_j = G_j.reshape(G_j.shape[0], rr.shape[0], rr.shape[1])
+        
         nmvals = self._n_m()
         cosm = np.array([nmvals[m] * np.cos(m * self.phi) for m in range(self.mmax)])
         sinm = np.array([nmvals[m] * np.sin(m * self.phi) for m in range(self.mmax)])
@@ -724,9 +726,9 @@ class LaguerreAmplitudes:
 
         Parameters:
         -----------
-        rr : array-like
+        rr : array-like, shape [x,y]
             Radial coordinates for reconstruction.
-        pp : array-like
+        pp : array-like, shape [x,y]
             Angular coordinates for reconstruction.
 
         Returns:
@@ -778,17 +780,6 @@ class LaguerreAmplitudes:
             
             # Recompute the Laguerre amplitudes with the updated coordinates
             self.laguerre_amplitudes()
-
-
-# Constants
-rscl_initial = 10
-mmax_initial = 2
-nmax_initial = 10
-rscl_values = np.linspace(1, 20, 100)
-new_mmax = 2
-new_nmax = 24
-num_realizations = 100
-filters = ['f444w', 'f356w', 'f277w', 'f200w', 'f115w', 'f410m', 'f125w', 'f160w', 'f606w', 'f814w']
 
 def process_galaxy(galaxy_id, fits_files, filename):
     """
@@ -877,3 +868,14 @@ def process_galaxy(galaxy_id, fits_files, filename):
             
             '''
         print(f"{galaxy_id} coefficients for filter {filter_name} saved successfully.")
+        
+
+# Constants
+rscl_initial = 10
+mmax_initial = 2
+nmax_initial = 10
+rscl_values = np.linspace(1, 20, 100)
+new_mmax = 2
+new_nmax = 24
+num_realizations = 100
+filters = ['f444w', 'f356w', 'f277w', 'f200w', 'f115w', 'f410m', 'f125w', 'f160w', 'f606w', 'f814w']
