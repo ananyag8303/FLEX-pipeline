@@ -1,4 +1,8 @@
-# flex-pipeline
+# FLEX-pipeline
+
+Repository created to expand disc galaxies from the CEERS dataset using Fourier - Laguerre Polynomials. 
+
+![Alt text](Paper_Grid.png)
 
 FITS File Format
 
