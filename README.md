@@ -5,13 +5,13 @@ Repository created to expand disc galaxies from the CEERS dataset using Fourier 
 
 The following is a summary of the files in this repository:
 
-1. \texttt{Accounting.ipynb}: Summary of disc galaxies used from Ferreira et al (2023) database
-2. \texttt{Code_Overview.ipynb}: Notebook detailing the structure of \textbf{\textit{FLEX}}
-3. \texttt{Math_Overview.ipynb}: Notebook detailing the mathematics behind \textbf{\textit{FLEX}}. This is based on initial work presented in Weinberg & Petersen (2021).
-4. \texttt{FLEX.py}: File containing the main classes that produced coefficients as described in \texttt{Code_Overview.ipynb}. 
-5. \texttt{FLEX_Error.py}: File that runs and creates 100 image realisations of a galaxy and finds respective coefficients. 
-6. \texttt{Example_Run.ipynb}: Notebook to run the main \textbf{\textit{FLEX}} pipeline from \texttt{FLEX.py}
-7. \texttt{Example_Run-Error.ipynb}: Notebook to run pipeline from \texttt{FLEX_Error.py}
+1. `Accounting.ipynb`: Summary of disc galaxies used from Ferreira et al (2023) database available [here.](https://github.com/astroferreira/CEERS_EPOCHS_MORPHO/tree/main)
+2. `Code_Overview.ipynb`: Notebook detailing the structure of ***FLEX***
+3. `Math_Overview.ipynb`: Notebook detailing the mathematics behind ***FLEX***. This is based on initial work presented in Weinberg & Petersen (2021).
+4. `FLEX.py`: File containing the main classes that produced coefficients as described in `Code_Overview.ipynb`. 
+5. `FLEX_Error.py`: File that runs and creates 100 image realisations of a galaxy and finds respective coefficients. 
+6. `Example_Run.ipynb`: Notebook to run the main ***FLEX*** pipeline from `FLEX.py`
+7. `Example_Run-Error.ipynb`: Notebook to run pipeline from \texttt{FLEX_Error.py}
 
 The below table displays the RA and Dec bounds for all fields imaged through CEERS. This is useful when identifying which FITS files to download. For reference, EGS23205 lies in Field Number 3. 
 
@@ -30,19 +30,23 @@ The below table displays the RA and Dec bounds for all fields imaged through CEE
 
 This repository accepts file names in the following format for easier handling:
 
-- f444w({field_number}).fits
-- f410m({field_number}).fits
-- f356w({field_number}).fits
-- f277w({field_number}).fits
-- f200w({field_number}).fits
-- f115w({field_number}).fits
-- f125w({field_number}).fits
-- f160w({field_number}).fits
-- f814w({field_number}).fits
-- f606w({field_number}).fits
+- f444w(`{field_number}`).fits
+- f410m(`{field_number}`).fits
+- f356w(`{field_number}`).fits
+- f277w(`{field_number}`).fits
+- f200w(`{field_number}`).fits
+- f115w(`{field_number}`).fits
+- f125w(`{field_number}`).fits
+- f160w(`{field_number}`).fits
+- f814w(`{field_number}`).fits
+- f606w(`{field_number}`).fits
 
-Besides this, please keep a note of the following points before using \textbf{\textit{FLEX}}
+Besides this, please keep a note of the following points before using ***FLEX***
 
 - CEERS JWST and archival HST FITS files can be found here: https://ceers.github.io/dr05.html. While this pipeline has been set up to expand disc galaxies from the CEERS dataset, it can be adapted to other surveys like PRIMER and JADES too. 
 - The CANDELS catalogue for this pipeline can be found here: https://archive.stsci.edu/hlsp/candels/egs-catalogs. I refered to 'hlsp_candels_hst_wfc3_egs_multi_v1_mass-cat.txt' to get RA and Dec values. (Note: Upon downloading, the filename changes to 'hlsp_candels_hst_wfc3_egs_multi_v1_mass-cat.csv.txt')
 - In the Example_Run.ipynb notebook, one must change the condiotion set for searching through FITS files bounds based on the FITS file present in the directory. The line to change is 'fits_files = [f'f356w({i}).fits' for i in range(3, 4)]'. Currently, this only searches through FITS files related to Field Number 3. The same thing must be done for Example_Run-Error.ipynb
+
+If you use this ***FLEX*** as part of your research, we kindly ask you to reference it as:
+
+[insert citation here]
