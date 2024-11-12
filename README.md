@@ -1,6 +1,7 @@
 # FLEX-pipeline
 
 Repository created to expand disc galaxies from the CEERS dataset using Fourier - Laguerre Polynomials. This pipeline has currently been set up to expand disc galaxies in 6 JWST filters (F444W, F4120M, F356W, F277W, F200W and F115W) and 4 HST filters (F125W, F160W, F606W and F814W). The below image demonstrates the reconstructed expansion of EGS23205 in all ten filters (bottom panel) as compared to the original surface density. 
+
 ![Alt text](Paper_Grid.png)
 
 The following is a summary of the files in this repository:
@@ -12,6 +13,7 @@ The following is a summary of the files in this repository:
 5. `FLEX_Error.py`: File that runs and creates 100 image realisations of a galaxy and finds respective coefficients. 
 6. `Example_Run.ipynb`: Notebook to run the main ***FLEX*** pipeline from `FLEX.py`
 7. `Example_Run-Error.ipynb`: Notebook to run pipeline from `FLEX_Error.py`
+8. `summary_values.csv`: CSV file summarising the following information for each galaxy: `RA`, `Dec`, `Redshift`, `Stellar Mass`, `SFR`, `Asymmetry` in all 10 filters. Note `RA`, `Dec`, `Redshift`, `Stellar Mass` and `SFR` values have been obtained from the CANDELS catalogue. 
 
 The below table displays the RA and Dec bounds for all fields imaged through CEERS. This is useful when identifying which FITS files to download. For reference, EGS23205 lies in Field Number 3. 
 
@@ -45,7 +47,7 @@ Besides this, please keep a note of the following points before using ***FLEX***
 
 - CEERS JWST and archival HST FITS files can be found [here.](https://ceers.github.io/dr05.html) While this pipeline has been set up to expand disc galaxies from the CEERS dataset, it can be adapted to other surveys like PRIMER and JADES too. 
 - The CANDELS catalogue for this pipeline can be found [here.](https://archive.stsci.edu/hlsp/candels/egs-catalogs) I refered to 'hlsp_candels_hst_wfc3_egs_multi_v1_mass-cat.txt' to get RA and Dec values. (Note: Upon downloading, the filename changes to 'hlsp_candels_hst_wfc3_egs_multi_v1_mass-cat.csv.txt')
-- In the Example_Run.ipynb notebook, one must change the condiotion set for searching through FITS files bounds based on the FITS file present in the directory. The line to change is 'fits_files = [f'f356w({i}).fits' for i in range(3, 4)]'. Currently, this only searches through FITS files related to Field Number 3. The same thing must be done for `Example_Run-Error.ipynb`
+- In the Example_Run.ipynb notebook, one must change the condiotion set for searching through FITS files bounds based on the FITS file present in the directory. The line to change is `fits_files = [f'f356w({i}).fits' for i in range(3, 4)]`. Currently, this only searches through FITS files related to Field Number 3. The same thing must be done for `Example_Run-Error.ipynb`
 
 If you use this ***FLEX*** as part of your research, we kindly ask you to reference it as:
 
