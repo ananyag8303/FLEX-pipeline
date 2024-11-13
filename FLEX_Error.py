@@ -274,17 +274,8 @@ class GalaxyDataExtractor:
             cropped_data = image_data.T[xmin:xmax, ymin:ymax]
             cropped_uncertainty = image_uncertainty.T[xmin:xmax, ymin:ymax]
             
-            # Transpose image data and uncertainty
-            cropped_data = cropped_data.T
-            cropped_uncertainty = cropped_uncertainty.T
-            
             # Replace any remaining NaNs or Infs with a small negligible number
             cropped_uncertainty = np.nan_to_num(cropped_uncertainty, nan=0.0001, posinf=0.0001, neginf=0.0001)
-    
-#             # Check if more than 50 elements in cropped_uncertainty are NaN or zero
-#             nan_or_zero_count = np.sum(np.isnan(cropped_uncertainty) | (cropped_uncertainty == 0))
-#             if nan_or_zero_count > 50:
-#                 print(f"Warning: {nan_or_zero_count} elements in cropped_uncertainty are NaN or zero for galaxy at ({rounded_x}, {rounded_y}).")
                 
             # If galaxy radius isn't fixed find it. This will be done for F444W and kept fixed for all other filters
             if galaxy_radius is None:
@@ -842,7 +833,6 @@ def process_galaxy(galaxy_id, fits_files, filename):
                 
                 # Update orders and recalculate the Laguerre amplitudes
                 L.update_orders(new_mmax, new_nmax)
-                rr, pp = np.sqrt((xpix - L.xpix)**2 + (ypix - L.ypix)**2), np.arctan2(ypix - L.ypix, xpix - L.xpix)
                 L.laguerre_amplitudes()
 
                 # Store the coefficients for this realization

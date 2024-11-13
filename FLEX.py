@@ -280,10 +280,6 @@ class GalaxyDataExtractor:
             cropped_data = image_data.T[xmin:xmax, ymin:ymax]
             cropped_uncertainty = image_uncertainty.T[xmin:xmax, ymin:ymax]
             
-            # Transpose image data and uncertainty
-            cropped_data = cropped_data.T
-            cropped_uncertainty = cropped_uncertainty.T
-            
             # If galaxy radius isn't fixed find it. This will be done in F444W and fixed for all further filters
             if galaxy_radius is None:
                 galaxy_radius = self.determine_galaxy_radius(cropped_data)
