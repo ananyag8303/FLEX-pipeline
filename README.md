@@ -46,7 +46,7 @@ This repository accepts file names in the following format for easier handling:
 Besides this, please keep a note of the following points before using ***FLEX***
 
 - CEERS JWST and archival HST FITS files can be found [here.](https://ceers.github.io/dr05.html) While this pipeline has been set up to expand disc galaxies from the CEERS dataset, it can be adapted to other surveys like PRIMER and JADES too. 
-- The CANDELS catalogue for this pipeline can be found [here.](https://archive.stsci.edu/hlsp/candels/egs-catalogs) I refered to 'hlsp_candels_hst_wfc3_egs_multi_v1_mass-cat.txt' to get RA and Dec values. (Note: Upon downloading, the filename changes to 'hlsp_candels_hst_wfc3_egs_multi_v1_mass-cat.csv.txt')
+- The CANDELS catalogue for this pipeline can be found [here.](https://archive.stsci.edu/hlsp/candels/egs-catalogs) I refered to `hlsp_candels_hst_wfc3_egs_multi_v1_mass-cat.txt` to get RA and Dec values. (Note: Upon downloading, the filename changes to `hlsp_candels_hst_wfc3_egs_multi_v1_mass-cat.csv.txt`)
 - In the Example_Run.ipynb notebook, one must change the condiotion set for searching through FITS files bounds based on the FITS file present in the directory. The line to change is `fits_files = [f'f356w({i}).fits' for i in range(3, 4)]`. Currently, this only searches through FITS files related to Field Number 3. The same thing must be done for `Example_Run-Error.ipynb`
 
 If you use this ***FLEX*** as part of your research, we kindly ask you to reference it as:
