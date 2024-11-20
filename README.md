@@ -51,17 +51,17 @@ Besides this, please keep a note of the following points before using ***FLEX***
 
 If you use this ***FLEX*** as part of your research, we kindly ask you to reference it as:
 
-`@ARTICLE{Ganapathy_etal(2023),<br/>
-       author = {{Ganapathy}, Ananya and {Petersen}, Michael S. and {Yaaqib}, Rashid and {Filion}, Carrie},<br/>
-        title = "{Disc asymmetry characterisation in JWST-observed galaxies at 1 < z < 4}",<br/>
-      journal = {arXiv e-prints},<br/>
-     keywords = {Astrophysics - Astrophysics of Galaxies},<br/>
-         year = 2024,<br/>
-        month = nov,<br/>
-          eid = {arXiv:2411.11972},<br/>
-        pages = {arXiv:2411.11972},<br/>
-          doi = {10.48550/arXiv.2411.11972},<br/>
-archivePrefix = {arXiv},<br/>
-       eprint = {2411.11972},<br/>
- primaryClass = {astro-ph.GA},<br/>
+`@ARTICLE{Ganapathy_etal(2023),
+       author = {{Ganapathy}, Ananya and {Petersen}, Michael S. and {Yaaqib}, Rashid and {Filion}, Carrie},
+        title = "{Disc asymmetry characterisation in JWST-observed galaxies at 1 < z < 4}",
+      journal = {arXiv e-prints},
+     keywords = {Astrophysics - Astrophysics of Galaxies},
+         year = 2024,
+        month = nov,
+          eid = {arXiv:2411.11972},
+        pages = {arXiv:2411.11972},
+          doi = {10.48550/arXiv.2411.11972},
+archivePrefix = {arXiv},
+       eprint = {2411.11972},
+ primaryClass = {astro-ph.GA},
 }`
